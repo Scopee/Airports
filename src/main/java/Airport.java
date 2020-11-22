@@ -1,5 +1,3 @@
-import com.opencsv.bean.CsvBindByPosition;
-
 import java.lang.reflect.Field;
 
 public class Airport {
@@ -22,20 +20,14 @@ public class Airport {
     }
 
     public Airport(String[] args) {
-        this.id = args[0];
-        this.name = args[1];
-        this.city = args[2];
-        this.country = args[3];
-        this.iata = args[4];
-        this.icao = args[5];
-        this.latitude = args[6];
-        this.longitude = args[7];
-        this.altitude = args[8];
-        this.timezone = args[9];
-        this.DST = args[10];
-        this.ianaTimeZone = args[11];
-        this.type = args[12];
-        this.source = args[13];
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (int i = 0; i < args.length; i++) {
+            try {
+                fields[i].set(this, args[i]);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
