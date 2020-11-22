@@ -13,7 +13,7 @@ public class Controller {
     private final PatriciaTrie<ArrayList<Integer>> trie;
     private final Map<Integer, String> airports;
     private final String path;
-    private final int columnIndex;
+    private int columnIndex;
 
     /**
      * Initialization of the controller.
@@ -26,9 +26,13 @@ public class Controller {
         Properties props = yamlFactory.getObject();
         assert props != null;
         path = props.getProperty("pathToCSV");
-        if (args.length == 1 && Integer.parseInt(args[0]) >= 1 && Integer.parseInt(args[0]) <= 14) {
-            this.columnIndex = Integer.parseInt(args[0]) - 1;
-        } else {
+        try {
+            if (args.length >= 1 && Integer.parseInt(args[0]) >= 1 && Integer.parseInt(args[0]) <= 14) {
+                this.columnIndex = Integer.parseInt(args[0]) - 1;
+            } else {
+                this.columnIndex = Integer.parseInt(props.getProperty("indexColumn")) - 1;
+            }
+        } catch (Exception e){
             this.columnIndex = Integer.parseInt(props.getProperty("indexColumn")) - 1;
         }
         airports = parseCSV();
